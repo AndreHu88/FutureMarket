@@ -26,7 +26,9 @@ class MainViewController: UIViewController, MDWebSocketUtilsDelegate, TDWebSocke
     let dataManager = DataManager.getInstance()
 
     func websocketDidReceiveMessage(socket: TDWebSocketUtils, text: String) {
+        
         DispatchQueue.global().async {
+            
             guard let data = text.data(using: .utf8) else {return}
             do{
                 guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {return}
@@ -108,15 +110,20 @@ class MainViewController: UIViewController, MDWebSocketUtilsDelegate, TDWebSocke
 
     //首次连接行情服务器与断开重连的行情订阅处理
     func sendSubscribeAfterConnect(socket: MDWebSocketUtils) {
+        
         if !self.dataManager.sQuotesText.isEmpty{
             socket.socket?.write(string: self.dataManager.sQuotesText)
-        }else if self.dataManager.sQuotes.count != 0{
+        }
+        else if self.dataManager.sQuotes.count != 0 {
+            
             if self.dataManager.sQuotes[0].isEmpty{
-                socket.sendSubscribeQuote(insList: self.dataManager.sQuotes[1].map {$0.key}[0..<CommonConstants.MAX_SUBSCRIBE_QUOTES].joined(separator: ","))
-            }else if self.dataManager.sQuotes[0].count < CommonConstants.MAX_SUBSCRIBE_QUOTES{
+                socket.sendSubscribeQuote(insList: self.dataManager.sQuotes[1].map {$0.key}[0 ..< CommonConstants.MAX_SUBSCRIBE_QUOTES].joined(separator: ","))
+            }
+            else if self.dataManager.sQuotes[0].count < CommonConstants.MAX_SUBSCRIBE_QUOTES{
                 let insList = self.dataManager.getCombineInsList(data: self.dataManager.sQuotes[0].map {$0.key})
                 socket.sendSubscribeQuote(insList: insList.joined(separator: ","))
-            }else {
+            }
+            else {
                 let insList = self.dataManager.getCombineInsList(data: Array(self.dataManager.sQuotes[0].map {$0.key}[0..<CommonConstants.MAX_SUBSCRIBE_QUOTES]))
                 socket.sendSubscribeQuote(insList: insList.joined(separator: ","))
             }
@@ -130,6 +137,7 @@ class MainViewController: UIViewController, MDWebSocketUtilsDelegate, TDWebSocke
     ////////////////////////////////////////////////////////////////////////////////
 
     func sessionSimpleDownload(urlString: String) {
+        
         guard let url = URL(string: urlString) else {return}
         var request = URLRequest(url: url)
         request.addValue("application/json", forHTTPHeaderField: "Accept")
@@ -579,10 +587,12 @@ class MainViewController: UIViewController, MDWebSocketUtilsDelegate, TDWebSocke
 
     //切换交易所行情列表
     func switchPage(index: Int) {
+        
         button.setTitle(CommonConstants.titleArray[index], for: .normal)
         if quotePageViewController.currentIndex < index {
             quotePageViewController.forwardPage(index: index)
-        } else if quotePageViewController.currentIndex > index {
+        }
+        else if quotePageViewController.currentIndex > index {
             quotePageViewController.backwardPage(index: index)
         }
 
@@ -591,12 +601,14 @@ class MainViewController: UIViewController, MDWebSocketUtilsDelegate, TDWebSocke
 
     //加载导航栏
     func loadQuoteNavigation(index: Int) {
+        
         if index == 0 {
             quoteNavgationView.isHidden = true
             left.isHidden = true
             right.isHidden = true
             quoteNavigationConstraint.constant = 0
-        } else {
+        }
+        else {
             quoteNavgationView.isHidden = false
             left.isHidden = false
             right.isHidden = false

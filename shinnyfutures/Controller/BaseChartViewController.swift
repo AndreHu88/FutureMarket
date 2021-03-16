@@ -97,7 +97,8 @@ class BaseChartViewController: UIViewController, ChartViewDelegate {
         let instrumentId = dataManager.sInstrumentId
         if CommonConstants.CURRENT_DAY_FRAGMENT.elementsEqual(fragmentType){
             MDWebSocketUtils.getInstance().sendSetChart(insList: instrumentId)
-        }else{
+        }
+        else{
             MDWebSocketUtils.getInstance().sendSetChartKline(insList: instrumentId, klineType: self.klineType, viewWidth: CommonConstants.VIEW_WIDTH)
         }
     }
@@ -106,7 +107,8 @@ class BaseChartViewController: UIViewController, ChartViewDelegate {
 
         if middleChartViewBase.isHidden{
             middleChartViewBase.isHidden = false
-        }else{
+        }
+        else{
             middleChartViewBase.isHidden = true
         }
 
@@ -120,6 +122,7 @@ class BaseChartViewController: UIViewController, ChartViewDelegate {
 
     // MARK: functions
     func initChart() {
+        
         colorChartBackground = UIColor.black
         colorText = UIColor.white
         colorGrid = CommonConstants.KLINE_GRID
@@ -205,7 +208,8 @@ class BaseChartViewController: UIViewController, ChartViewDelegate {
         if dataManager.isShowDownStack {
             middleChartViewBase.isHidden = true
 //            bottomChartViewBase.isHidden = true
-        }else{
+        }
+        else{
             middleChartViewBase.isHidden = false
 //            bottomChartViewBase.isHidden = false
         }
@@ -214,12 +218,15 @@ class BaseChartViewController: UIViewController, ChartViewDelegate {
 
     //持仓线增删操作
     func addPositionLimitLines() {
+        
         addLongPositionLimitLine()
         addShortPositionLimitLine()
     }
 
     func generatePositionLimitLine(limit: String, label: String, color: UIColor, limitKey: String, volume: Int) {
+        
         if let limit = Double(limit) {
+            
             let chartLimitLine = ChartLimitLine(limit: limit, label: label)
             chartLimitLine.lineWidth = 0.7
             chartLimitLine.lineDashLengths = [5.0, 5.0]
@@ -235,6 +242,7 @@ class BaseChartViewController: UIViewController, ChartViewDelegate {
     }
 
     func addLongPositionLimitLine() {
+        
         var key = dataManager.sInstrumentId
         if key.contains("KQ") {
             key = (dataManager.sSearchEntities[key]?.underlying_symbol)!
@@ -397,6 +405,7 @@ class BaseChartViewController: UIViewController, ChartViewDelegate {
 
     // MARK: objc methods
     @objc func refreshTradeLine() {
+        
         if dataManager.sIsLogin && isShowPositionLine {
             var key = dataManager.sInstrumentId
             if key.contains("KQ") {
@@ -485,6 +494,7 @@ class BaseChartViewController: UIViewController, ChartViewDelegate {
 
     //删除所有K线图
     @objc func clearChartView(){
+        
         xVals.removeAll()
         removeLatestLine()
         removeOrderLimitLines()
@@ -522,6 +532,7 @@ class BaseChartViewController: UIViewController, ChartViewDelegate {
 
     //长按显示十字光标
     @objc func longPressDetectedTop(gesture: UILongPressGestureRecognizer) {
+        
         let point = gesture.location(in: self.topChartViewBase)
         if gesture.state == .began{
             guard let h_top = self.topChartViewBase.getHighlightByTouchPoint(point) else {return}
@@ -529,7 +540,8 @@ class BaseChartViewController: UIViewController, ChartViewDelegate {
             self.topChartViewBase.highlightValue(h_top)
             highlight()
             topChartValueSelected(h_top: h_top)
-        }else{
+        }
+        else{
             topMove(point: point)
         }
 
@@ -551,6 +563,7 @@ class BaseChartViewController: UIViewController, ChartViewDelegate {
 
     //单击隐藏十字光标
     @objc func tapDetectedTop(gesture: UITapGestureRecognizer) {
+        
         self.topChartViewBase.highlightValue(nil)
         self.middleChartViewBase.highlightValue(nil)
         unHighlight()

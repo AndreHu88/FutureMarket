@@ -36,7 +36,8 @@ class LoginViewController: UIViewController {
         brokers = sDataManager.getBrokersFromBrokerId()
         if let brokerInfo = UserDefaults.standard.string(forKey: CommonConstants.CONFIG_BROKER) {
             self.brokerLabel.text = brokerInfo
-        }else if !brokers.isEmpty{
+        }
+        else if !brokers.isEmpty{
             self.brokerLabel.text = brokers[0]
         }
 

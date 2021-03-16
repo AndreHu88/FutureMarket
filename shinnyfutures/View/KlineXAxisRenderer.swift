@@ -10,6 +10,7 @@ import UIKit
 import Charts
 
 open class KlineXAxisRenderer: XAxisRenderer {
+    
     var xAxis: MyXAxis?
     
     init(viewPortHandler: ViewPortHandler, xAxis: MyXAxis?, transformer: Transformer?) {
@@ -20,8 +21,7 @@ open class KlineXAxisRenderer: XAxisRenderer {
     override open func renderAxisLabels(context: CGContext) {
         guard let xAxis = self.xAxis else { return }
         
-        if !xAxis.isEnabled || !xAxis.isDrawLabelsEnabled
-        {
+        if !xAxis.isEnabled || !xAxis.isDrawLabelsEnabled {
             return
         }
         

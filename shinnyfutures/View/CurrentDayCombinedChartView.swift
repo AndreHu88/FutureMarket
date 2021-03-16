@@ -29,8 +29,8 @@ class CurrentDayCombinedChartView: CombinedChartView {
 
     //k线图画框打补丁，只画顶部线
     override func drawGridBackground(context: CGContext) {
-        if drawGridBackgroundEnabled || drawBordersEnabled
-        {
+        
+        if drawGridBackgroundEnabled || drawBordersEnabled{
             context.saveGState()
         }
 
@@ -58,15 +58,9 @@ class CurrentDayCombinedChartView: CombinedChartView {
     open override func drawMarkers(context: CGContext) {
 
         // if there is no marker view or drawing marker is disabled
-        guard
-            let marker = marker
-            , isDrawMarkersEnabled &&
-                valuesToHighlight()
-            else { return }
+        guard let marker = marker, isDrawMarkersEnabled && valuesToHighlight() else { return }
 
-
-        for highlight in _indicesToHighlight
-        {
+        for highlight in _indicesToHighlight {
 
             guard let
                 set = combinedData?.getDataSetByIndex(highlight.dataSetIndex),
@@ -74,8 +68,7 @@ class CurrentDayCombinedChartView: CombinedChartView {
                 else { continue }
 
             let entryIndex = set.entryIndex(entry: e)
-            if entryIndex > Int(Double(set.entryCount) * _animator.phaseX)
-            {
+            if entryIndex > Int(Double(set.entryCount) * _animator.phaseX) {
                 continue
             }
 

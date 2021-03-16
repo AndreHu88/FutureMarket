@@ -122,6 +122,7 @@ class CurrentDayViewController: BaseChartViewController {
     override func refreshKline() {
         
         if topChartViewBase.data != nil && (topChartViewBase.data?.dataSetCount)! > 0 {
+            
             let topCombineData = topChartViewBase.combinedData
             let topLineData = topCombineData?.lineData
 
@@ -179,7 +180,8 @@ class CurrentDayViewController: BaseChartViewController {
             middleChartViewBase.xAxis.axisMaximum = middleCombineData?.xMax ?? 0 + 0.35
 //            (middleChartViewBase.xAxis as! MyXAxis).labels = labels
 
-        } else {
+        }
+        else {
             guard let quote = dataManager.sRtnMD.quotes[dataManager.sInstrumentId] else {return}
             guard let kline = dataManager.sRtnMD.klines[dataManager.sInstrumentId]?[klineType] else {return}
             self.kline = kline

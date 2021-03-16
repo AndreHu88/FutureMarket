@@ -190,6 +190,7 @@ class KlineViewController: BaseChartViewController {
     override func refreshKline() {
 
         if topChartViewBase.data != nil && (topChartViewBase.data?.dataSetCount)! > 0 {
+            
             let topCombineData = topChartViewBase.combinedData
             let candleData = topCombineData?.candleData
             let middleCombineData = middleChartViewBase.combinedData
@@ -198,13 +199,13 @@ class KlineViewController: BaseChartViewController {
 
             let datas = kline.datas
             var left_id_t = chart.left_id as? Int ?? -1
-            if left_id_t < 0 {left_id_t = 0}
+            if left_id_t < 0 { left_id_t = 0 }
             var right_id_t = chart.right_id as? Int ?? -1
             if right_id_t < 0 {right_id_t = 0}
             var last_id_t = kline.last_id as? Int ?? -1
             if last_id_t < 0 {last_id_t = 0}
 
-            if right_id_t == right_id && left_id_t == left_id{
+            if right_id_t == right_id && left_id_t == left_id {
 //                print("k线图刷新")
                 let xValue = Double(last_id)
                 candleData?.removeEntry(xValue: xValue, dataSetIndex: 0)
@@ -215,13 +216,16 @@ class KlineViewController: BaseChartViewController {
                 middleBarData?.removeEntry(xValue: xValue, dataSetIndex: 0)
                 generateLineCandleDataEntry(left_id: left_id, index: last_id, datas: datas)
                 refreshLatestLine(data: datas["\(last_id)"])
-            } else if right_id_t > right_id && left_id_t > left_id{
+            }
+            else if right_id_t > right_id && left_id_t > left_id {
                 //NSLog("向后添加柱子")
                 for index in (right_id + 1)...right_id_t {
                     generateLineCandleDataEntry(left_id: left_id, index: index, datas: datas)
                 }
                 refreshLatestLine(data: datas["\(last_id)"])
-            }else if left_id_t < left_id{
+            }
+            else if left_id_t < left_id{
+                
                 //NSLog("向前添加柱子")
                 var index = left_id - 1
                 while index >= left_id_t {
@@ -241,7 +245,8 @@ class KlineViewController: BaseChartViewController {
             middleChartViewBase.notifyDataSetChanged()
             middleChartViewBase.xAxis.axisMaximum = (middleCombineData?.xMax)! + 2.5
             middleChartViewBase.xAxis.axisMinimum = (middleCombineData?.xMin)! - 0.5
-        } else {
+        }
+        else {
             NSLog("k线图初始化")
             guard let chart = dataManager.sRtnMD.charts[CommonConstants.CHART_ID] else {return}
             self.chart = chart
@@ -352,6 +357,7 @@ class KlineViewController: BaseChartViewController {
 
     //添加单个均线数据与柱子
     private func generateLineCandleDataEntry(left_id: Int, index: Int, datas: [String: Kline.Data]) {
+        
         guard let data = datas["\(index)"] else {return}
         let entries = generateMultiDataEntry(index: index, data: data)
         let candleEntry = entries[0]
@@ -361,7 +367,8 @@ class KlineViewController: BaseChartViewController {
         _ = middleChartViewBase.lineData?.getDataSetByIndex(0).addEntryOrdered(oiEntry)
         _ = middleChartViewBase.barData?.getDataSetByIndex(0).addEntryOrdered(volumeEntry)
 
-        for i in Array(0..<mas.count) {
+        for i in Array(0 ..< mas.count) {
+            
             let para = mas[i]
             if index >= left_id + para - 1 {
                 let entry = generateMALineDataEntry(index: index, lineIndex: para - 1, datas: datas)
@@ -402,6 +409,7 @@ class KlineViewController: BaseChartViewController {
 
     //生成蜡烛图数据
     private func generateCandleData(candleEntries: [CandleChartDataEntry]) -> CandleChartData {
+        
         let set = CandleChartDataSet(values: candleEntries, label: "kline")
         set.axisDependency = .left
         set.shadowWidth = 0.7
@@ -477,6 +485,7 @@ class KlineViewController: BaseChartViewController {
 
     //生成持仓量数据集
     private func generateLineDataSet(entries: [ChartDataEntry], color: UIColor, label: String, isHighlight: Bool, axisDependency: YAxis.AxisDependency) -> LineChartDataSet {
+        
         let set = LineChartDataSet(values: entries, label: label)
         set.setColor(color)
         set.lineWidth = 0.7
@@ -495,11 +504,13 @@ class KlineViewController: BaseChartViewController {
 
     //控制均线显示与否
     @objc override func controlAverageLine(notification: Notification) {
+        
         isShowAverageLine = notification.object as! Bool
         if isShowAverageLine {
             topChartViewBase.combinedData?.lineData = maLineData
             topChartViewBase.legend.enabled = true
-        } else {
+        }
+        else {
             topChartViewBase.combinedData?.lineData = LineChartData()
             topChartViewBase.legend.enabled = false
         }
@@ -547,10 +558,12 @@ class KlineViewController: BaseChartViewController {
         weak var parent: KlineViewController!
 
         init(parent: KlineViewController) {
+            
             self.parent = parent
         }
 
         func stringForValue(_ value: Double, entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
+            
             let instrumentId = DataManager.getInstance().sInstrumentId
             let decimal = parent.dataManager.getDecimalByPtick(instrumentId: instrumentId)
             return parent.dataManager.saveDecimalByPtick(decimal: decimal, data: "\(value)")

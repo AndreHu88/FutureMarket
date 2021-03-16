@@ -72,6 +72,7 @@ class QuotePageViewController: UIPageViewController, UIPageViewControllerDataSou
 
     //导航栏切换合约
     func forwardPage(index: Int) {
+        
         currentIndex = index
         if let nextViewController = contentViewController(at: currentIndex) {
             nextViewController.sendSubscribeQuotes()

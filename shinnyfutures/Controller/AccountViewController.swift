@@ -52,6 +52,7 @@ class AccountViewController: UIViewController {
     @objc func loadData() {
         guard let user = dataManager.sRtnTD.users[dataManager.sUser_id] else {return}
         for (_, account) in  user.accounts {
+            
             let static_balance = "\(account.static_balance ?? 0.0)"
             let close_profit = "\(account.close_profit ?? 0.0)"
             let position_profit = "\(account.position_profit ?? 0.0)"

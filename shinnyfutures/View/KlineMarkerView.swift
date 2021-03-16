@@ -29,6 +29,7 @@ open class KlineMarkerView: MarkerView {
     let dateformatter = DateFormatter()
 
     func resizeXib(heiht: CGFloat, width: CGFloat){
+        
         var Rect: CGRect = self.frame
         Rect.size.height = heiht
 //        Rect.size.width = width / 6

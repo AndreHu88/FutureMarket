@@ -278,7 +278,8 @@ class DataManager {
             quote.instrument_id = ins
             sQuotes[0].append((key: ins, value: quote))
             ToastUtils.showPositiveMessage(message: "合约\(ins)已添加到自选～")
-        } else if let index = optional.index(of: ins), let index1 = sQuotes[0].index(where: {$0.key.elementsEqual(ins)}){
+        }
+        else if let index = optional.index(of: ins), let index1 = sQuotes[0].index(where: {$0.key.elementsEqual(ins)}){
             optional.remove(at: index)
             FileUtils.saveOptional(ins: optional)
             //如果三个数据集之间不同步,删除会有崩溃的危险
@@ -289,13 +290,13 @@ class DataManager {
     }
 
     func saveDecimalByPtick(decimal: Int, data: String) -> String {
-        guard let num = Double(data) else {return data}
+        guard let num = Double(data) else { return data }
         return String(format: "%.\(decimal)f", num)
     }
 
     func getDecimalByPtick(instrumentId: String) -> Int {
         if let search = sSearchEntities[instrumentId] {
-            guard let p_decs = search.p_decs else {return 0}
+            guard let p_decs = search.p_decs else { return 0 }
             return p_decs
         }
         return 0
@@ -316,18 +317,21 @@ class DataManager {
 
     //计算组合部分行情
     func calculateCombineQuotePart(quote: Quote) -> Quote {
+        
         let instrument_id = "\(quote.instrument_id ?? "")"
-        guard let search = sSearchEntities[instrument_id] else {return quote}
+        guard let search = sSearchEntities[instrument_id] else { return quote}
         guard let leg1_symbol = search.leg1_symbol else {return quote}
         guard let leg2_symbol = search.leg2_symbol else {return quote}
         guard let quote_leg1 = sRtnMD.quotes[leg1_symbol] else {return quote}
         guard let quote_leg2 = sRtnMD.quotes[leg2_symbol] else {return quote}
         let last_leg1 = "\(quote_leg1.last_price ?? "")"
         let last_leg2 = "\(quote_leg2.last_price ?? "")"
+        
         if let last_leg1 = Float(last_leg1), let last_leg2 = Float(last_leg2){
             let last = last_leg1 - last_leg2
             quote.last_price = last
         }
+        
         let ask_price1_leg1 = "\(quote_leg1.ask_price1 ?? "")"
         let bid_price1_leg2 = "\(quote_leg2.bid_price1 ?? "")"
         if let ask_price1_leg1 = Float(ask_price1_leg1), let bid_price1_leg2 = Float(bid_price1_leg2){
@@ -377,6 +381,7 @@ class DataManager {
 
     //计算组合完整行情
     func calculateCombineQuoteFull(quote: Quote) -> Quote {
+        
         let instrument_id = "\(quote.instrument_id ?? "")"
         guard let search = sSearchEntities[instrument_id] else {return quote}
         guard let leg1_symbol = search.leg1_symbol else {return quote}
@@ -495,7 +500,7 @@ class DataManager {
         guard let dataArray = rtnData[RtnMDConstants.data] as? [Any] else {return}
         for dataJson in dataArray {
             guard let data = dataJson as? [String: Any] else {continue}
-            for (key, value) in data{
+            for (key, value) in data {
                 switch key{
                 case RtnMDConstants.quotes:
                     let quotes = value as? [String: Any]

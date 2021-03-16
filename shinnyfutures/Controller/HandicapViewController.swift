@@ -54,6 +54,7 @@ class HandicapViewController: UIViewController {
     
     // MARK: objc methods
     @objc private func refreshDatas() {
+        
         let instrumentId = dataManager.sInstrumentId
         let decimal = dataManager.getDecimalByPtick(instrumentId: instrumentId)
         guard var quote = dataManager.sRtnMD.quotes[instrumentId] else {return}
@@ -116,16 +117,21 @@ class HandicapViewController: UIViewController {
     }
 
     func setLabelColor(label: UILabel, pre_settlement: String) {
+        
         if let price = Float(label.text ?? "-"), let pre_settlement = Float(pre_settlement) {
+            
             let value = price - pre_settlement
             if value < 0 {
                 label.textColor = CommonConstants.ASK_BUTTON
-            }else if value > 0{
+            }
+            else if value > 0{
                 label.textColor = CommonConstants.BID_BUTTON
-            }else{
+            }
+            else{
                 label.textColor = CommonConstants.WHITE_TEXT
             }
-        }else{
+        }
+        else{
             label.textColor = CommonConstants.WHITE_TEXT
         }
     }

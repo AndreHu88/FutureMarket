@@ -79,7 +79,8 @@ class QuoteTableViewController: UITableViewController, UIPopoverPresentationCont
         let decimal = dataManager.getDecimalByPtick(instrumentId: instrumentId)
         if let insturmentName = dataManager.sSearchEntities[instrumentId]?.instrument_name{
             cell.name.text = insturmentName
-        }else{
+        }
+        else{
             cell.name.text = instrumentId
         }
 
@@ -300,18 +301,22 @@ class QuoteTableViewController: UITableViewController, UIPopoverPresentationCont
     
     // MARK: Methods
     func sendSubscribeQuotes() {
+        
         let indexPathsForVisiableRows = self.tableView.indexPathsForVisibleRows
         //侧滑页面以及滑动列表时订阅
         if let indexPaths = indexPathsForVisiableRows {
+            
             if  indexPaths.count > 0 {
                 let firstIndex = indexPaths[0].row
                 let lastIndex = firstIndex + CommonConstants.MAX_SUBSCRIBE_QUOTES
                 sendInsList(data: getInsList(data: insList, firstIndex: firstIndex, lastIndex: lastIndex))
-            }else{
+            }
+            else{
                 //当自选合约列表从无到有，从主力合约滑动过来时，虽然indexPaths.count==0，但是需要重新加载合约列表，订阅刚添加的合约行情
                 sendInsList(data: getInsList(data: insList, firstIndex: 0, lastIndex: CommonConstants.MAX_SUBSCRIBE_QUOTES))
             }
-        } else {
+        }
+        else {
             //导航栏切换页面时订阅
             sendInsList(data: getInsList(data: insList, firstIndex: 0, lastIndex: CommonConstants.MAX_SUBSCRIBE_QUOTES))
         }
@@ -336,7 +341,8 @@ class QuoteTableViewController: UITableViewController, UIPopoverPresentationCont
             }else {
                 return Array(data[firstIndex..<data.count])
             }
-        }else{
+        }
+        else{
             return Array(data[firstIndex..<lastIndex])
         }
     }
@@ -345,6 +351,7 @@ class QuoteTableViewController: UITableViewController, UIPopoverPresentationCont
     
     // MARK: objc Methods
     @objc func longPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        
         if longPressGestureRecognizer.state == .began {
             let touchPoint = longPressGestureRecognizer.location(in: self.view)
             if let indexPath = tableView.indexPathForRow(at: touchPoint) {
@@ -394,13 +401,17 @@ class QuoteTableViewController: UITableViewController, UIPopoverPresentationCont
         oldQuotes = quotes
         let count = quotes.count
         for ins in dataManager.sRtnMD.ins_list.split(separator: ",") {
+            
             let instrumentId = String(ins)
             if insList.contains(instrumentId) {
+                
                 let index = insList.index(of: instrumentId)
                 let quote = dataManager.sRtnMD.quotes[instrumentId]
                 if let index = index, let quote = quote, index < count {
+                    
                     var quote_copy = quote.copy() as! Quote
                     if self.index == 7 || self.index == 8 || self.index == 0{
+                        
                         if instrumentId.contains("&") && instrumentId.contains(" "){
                             quote_copy = dataManager.calculateCombineQuotePart(quote: quote_copy)
                         }

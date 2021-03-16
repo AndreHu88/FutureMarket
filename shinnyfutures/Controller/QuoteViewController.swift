@@ -32,6 +32,7 @@ class QuoteViewController: UIViewController, UICollectionViewDataSource, UIColle
     var transactionIndex = 0
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         updateTitle()
         button.setTitleColor(UIColor.white, for: .normal)
@@ -49,7 +50,8 @@ class QuoteViewController: UIViewController, UICollectionViewDataSource, UIColle
             position.isHidden = true
             order.isHidden = true
             transaction.isHidden = true
-        }else {
+        }
+        else {
             highlightBottomNavBorderLine(view: handicap)
             unhighlightBottomNavBorderLine(view: position)
             unhighlightBottomNavBorderLine(view: order)
@@ -77,7 +79,8 @@ class QuoteViewController: UIViewController, UICollectionViewDataSource, UIColle
             position.setTitle(CommonConstants.POSITION_DOWN, for: .normal)
             order.setTitle(CommonConstants.ORDER_DOWN, for: .normal)
             transaction.setTitle(CommonConstants.TRANSACTION_DOWN, for: .normal)
-        }else {
+        }
+        else {
             downStackViewHeight.constant = 40
             handicap.setTitle(CommonConstants.HANDICAP_UP, for: .normal)
             position.setTitle(CommonConstants.POSITION_UP, for: .normal)
@@ -286,6 +289,7 @@ class QuoteViewController: UIViewController, UICollectionViewDataSource, UIColle
     }
 
     private func switchKlinePage(index: Int, klineType: String) {
+        
         if index >= klinePageViewController.subViewControllers.count || index < 0{
             return
         }
@@ -294,7 +298,8 @@ class QuoteViewController: UIViewController, UICollectionViewDataSource, UIColle
         if klinePageViewController.currentIndex != index {
             klinePageViewController.setViewControllers([subView], direction: .forward, animated: false, completion: nil)
             klinePageViewController.currentIndex = index
-        }else {
+        }
+        else {
             var fragmengType = ""
             if index == 4{
                 fragmengType = CommonConstants.SECOND_FRAGMENT
@@ -479,7 +484,8 @@ class QuoteViewController: UIViewController, UICollectionViewDataSource, UIColle
         let optional = FileUtils.getOptional()
         if optional.contains(dataManager.sInstrumentId){
             save.image = UIImage(named: "heart", in: Bundle(identifier: "com.shinnytech.futures"), compatibleWith: nil)
-        }else{
+        }
+        else{
             save.image = UIImage(named: "heart_outline", in: Bundle(identifier: "com.shinnytech.futures"), compatibleWith: nil)
         }
     }
@@ -559,7 +565,8 @@ class QuoteViewController: UIViewController, UICollectionViewDataSource, UIColle
     func initMD5ViewVisibility() {
         if !dataManager.sInstrumentId.contains("SHFE") && !dataManager.sInstrumentId.contains("INE"){
             md5View.isHidden = true
-        }else {
+        }
+        else {
             //判断有无五档行情
             if let quote = dataManager.sRtnMD.quotes[dataManager.sInstrumentId], let ask_price5 = quote.ask_price5{
                 if ask_price5 is NSNull{
@@ -577,9 +584,11 @@ class QuoteViewController: UIViewController, UICollectionViewDataSource, UIColle
 
     //切换合约刷新五档行情
     @objc func updateMD5ViewVisibility() {
+        
         if !dataManager.sInstrumentId.contains("SHFE") && !dataManager.sInstrumentId.contains("INE"){
             md5View.isHidden = true
-        }else {
+        }
+        else {
             let isShowMD5 = UserDefaults.standard.bool(forKey: CommonConstants.CONFIG_MD5)
             if isShowMD5 {
                 md5View.isHidden = false

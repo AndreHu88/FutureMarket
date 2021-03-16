@@ -9,6 +9,7 @@
 import Foundation
 
 class Chart: NSObject {
+    
     @objc var right_id: Any?
     @objc var left_id: Any?
     @objc var state: State?
@@ -25,4 +26,5 @@ class Chart: NSObject {
         @objc var view_width: Any?
 
     }
+    
 }

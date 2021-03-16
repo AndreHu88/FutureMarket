@@ -20,6 +20,7 @@ protocol MDWebSocketUtilsDelegate: NSObjectProtocol {
 class MDWebSocketUtils: NSObject, WebSocketDelegate, WebSocketPongDelegate {
 
     var socket: WebSocket?
+    
     weak var mdWebSocketUtilsDelegate: MDWebSocketUtilsDelegate?
 
     //单例
@@ -51,7 +52,7 @@ class MDWebSocketUtils: NSObject, WebSocketDelegate, WebSocketPongDelegate {
 
     // MARK: 发送ping
     func ping() {
-        guard let socket_ = self.socket else{return}
+        guard let socket_ = self.socket else { return }
         socket_.write(ping: Data())
     }
 
@@ -69,12 +70,13 @@ class MDWebSocketUtils: NSObject, WebSocketDelegate, WebSocketPongDelegate {
 
     // MARK: 行情订阅
     func sendSubscribeQuote(insList: String) {
-        guard let socket_ = self.socket else {return}
+        
+        guard let socket_ = self.socket else { return }
         let subscribeQuote = ReqSubscribeQuote(aid: "subscribe_quote", ins_list: insList)
         let jsonEncoder = JSONEncoder()
         do {
             let jsonData = try jsonEncoder.encode(subscribeQuote)
-            guard let json = String(data: jsonData, encoding: String.Encoding.utf8) else {return}
+            guard let json = String(data: jsonData, encoding: String.Encoding.utf8) else { return }
             socket_.write(string: json)
             DataManager.getInstance().sQuotesText = json
         } catch {
@@ -84,7 +86,8 @@ class MDWebSocketUtils: NSObject, WebSocketDelegate, WebSocketPongDelegate {
 
     // MARK: 获取合约信息
     func sendPeekMessage() {
-        guard let socket_ = self.socket else {return}
+        
+        guard let socket_ = self.socket else { return }
         let peekMessage = ReqPeekMessage(aid: "peek_message")
         let jsonEncoder = JSONEncoder()
         do {
@@ -117,6 +120,7 @@ class MDWebSocketUtils: NSObject, WebSocketDelegate, WebSocketPongDelegate {
 
     // MARK: k线
     func sendSetChartKline(insList: String, klineType: String, viewWidth: Int) {
+        
         guard let socket_ = self.socket else {return}
         guard let duration = Int64(klineType)else {return}
         let setChart = ReqSetChartKline(aid: "set_chart", chart_id: CommonConstants.CHART_ID, ins_list: insList, duration: duration, view_width: viewWidth)
